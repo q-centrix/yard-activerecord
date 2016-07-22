@@ -11,6 +11,8 @@ module YARD::Handlers::Ruby::ActiveRecord::Fields
     handles method_call(:timestamp)
     handles method_call(:datetime)
     handles method_call(:date)
+    handles method_call(:jsonb)
+    handles method_call(:json)
 
     def process
       return unless statement.namespace.jump(:ident).source == 't'
@@ -53,6 +55,8 @@ module YARD::Handlers::Ruby::ActiveRecord::Fields
     def class_name
       if ['datetime', 'timestamp'].include?(caller_method)
         'DateTime'
+      elsif %w(json jsonb).include?(caller_method)
+        'JSON'
       else
         caller_method.capitalize
       end
